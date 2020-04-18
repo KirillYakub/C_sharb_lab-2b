@@ -12,6 +12,7 @@ namespace WindowsFormsApp1
         public void Form1_Load(object sender, EventArgs e)
         { }
 
+        //генерирование координат треугольников;
         public void button1_Click(object sender, EventArgs e)
         {
             int size;
@@ -75,9 +76,8 @@ namespace WindowsFormsApp1
 
             }
 
+            //подсчет и вывод информ. о равнобедренном треугольнике с макс. площадью;
             number.Calculate(size, arr);
-
-            //number.Pertain(size, arr);
 
             for(int i = 0; i < arr.Length; i++)
             {
@@ -94,6 +94,7 @@ namespace WindowsFormsApp1
                 richTextBox2.Text += ($"Среди данных треугольников нет равнобедренного для подсчета максимальной площади" + "\n\n");
             }
 
+            //вывод информации;
             for(int i = 0; i < arr.Length; i++)
             {
                 richTextBox1.Text += ($"Треугольник под номером {i + 1}" + "\n");
@@ -112,6 +113,50 @@ namespace WindowsFormsApp1
                 }
             }
 
+            //поиск подобных треугольников;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                richTextBox3.Text += ($"Подобные {i + 1}-му: ");
+
+                count = 0;
+
+                for (int j = i + 1; j < arr.Length; j++)
+                {
+                    if ((arr[i].sideAB > arr[j].sideAB) && (arr[i].sideBC > arr[j].sideBC) && (arr[i].sideAC > arr[j].sideAC))
+                    {
+                        double difference = arr[i].sideAB - arr[j].sideAB, a = arr[i].sideAB / difference, a1 = arr[j].sideAB / difference;
+                        double difference1 = arr[i].sideBC - arr[j].sideBC, b = arr[i].sideBC / difference1, b1 = arr[j].sideBC / difference1;
+                        double difference2 = arr[i].sideAC - arr[j].sideAC, c = arr[i].sideAC / difference2, c1 = arr[j].sideAC / difference2;
+                        if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
+                        {
+                            richTextBox3.Text += ($"{j + 1}; ");
+                            count++;
+                            continue;
+                        }
+                    }
+
+                    if ((arr[i].sideAB < arr[j].sideAB) && (arr[i].sideBC < arr[j].sideBC) && (arr[i].sideAC < arr[j].sideAC) && i != j)
+                    {
+                        double difference = arr[j].sideAB - arr[i].sideAB, a = arr[i].sideAB / difference, a1 = arr[j].sideAB / difference;
+                        double difference1 = arr[j].sideBC - arr[i].sideBC, b = arr[i].sideBC / difference1, b1 = arr[j].sideBC / difference1;
+                        double difference2 = arr[j].sideAC - arr[i].sideAC, c = arr[i].sideAC / difference2, c1 = arr[j].sideAC / difference2;
+                        if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
+                        {
+                            richTextBox3.Text += ($"{j + 1}; ");
+                            count++;
+                            continue;
+                        }
+                    }
+                }
+
+                if (count == 0)
+                {
+                    richTextBox3.Text += ("Нет подобных");
+                }
+
+                richTextBox3.Text += ("\n\n");
+            }
+
             Console.ReadLine();
         }
 
@@ -127,6 +172,17 @@ namespace WindowsFormsApp1
         public void button2_Click(object sender, EventArgs e)
         { this.Close(); }
 
+        public void richTextBox2_TextChanged(object sender, EventArgs e)
+        { }
+
+        public void richTextBox3_TextChanged(object sender, EventArgs e)
+        { }
+
+        public void label2_Click(object sender, EventArgs e)
+        { }
+
+        public void label4_Click(object sender, EventArgs e)
+        { }
     }
 
     class Isoc : Triangle
@@ -243,89 +299,6 @@ namespace WindowsFormsApp1
             }
         }
 
-        //функция поиска подобных треугольников;
-        public void Pertain(int size, Triangle[] arr)
-        {
-            if (size > 1)
-            {
-                for (int i = 0; i < arr.Length; i++)
-                {
-                    int count = 0;
-                    Console.Write($"Подобные {i + 1}-му: ");
-
-                    for (int j = 1; j < arr.Length; j++)
-                    {
-                        //проверка по трем сторонам;
-                        if ((arr[i].sideAB > arr[j].sideAB) && (arr[i].sideBC > arr[j].sideBC) && (arr[i].sideAC > arr[j].sideAC) && i != j)
-                        {
-                            double difference = arr[i].sideAB - arr[j].sideAB, a = arr[i].sideAB / difference, a1 = arr[j].sideAB / difference;
-                            double difference1 = arr[i].sideBC - arr[j].sideBC, b = arr[i].sideBC / difference1, b1 = arr[j].sideBC / difference1;
-                            double difference2 = arr[i].sideAC - arr[j].sideAC, c = arr[i].sideAC / difference2, c1 = arr[j].sideAC / difference2;
-                            if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
-                            {
-                                Console.Write($"{j + 1};");
-                                count++;
-                                continue;
-                            }
-                        }
-
-                        if ((arr[i].sideAB < arr[j].sideAB) && (arr[i].sideBC < arr[j].sideBC) && (arr[i].sideAC < arr[j].sideAC) && i != j)
-                        {
-                            double difference = arr[j].sideAB - arr[i].sideAB, a = arr[i].sideAB / difference, a1 = arr[j].sideAB / difference;
-                            double difference1 = arr[j].sideBC - arr[i].sideBC, b = arr[i].sideBC / difference1, b1 = arr[j].sideBC / difference1;
-                            double difference2 = arr[j].sideAC - arr[i].sideAC, c = arr[i].sideAC / difference2, c1 = arr[j].sideAC / difference2;
-                            if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
-                            {
-                                Console.Write($"{j + 1};");
-                                count++;
-                                continue;
-                            }
-                        }
-
-                        //проверка по двум углам;
-                        if ((arr[i].angleA > arr[j].angleA && arr[i].angleB > arr[j].angleB) || (arr[i].angleB > arr[j].angleB && arr[i].angleC > arr[j].angleC) || (arr[i].angleA > arr[j].angleA && arr[i].angleC > arr[j].angleC))
-                        {
-                            double difference = arr[i].angleA - arr[j].angleA, a = arr[i].angleA / difference, a1 = arr[j].angleA / difference;
-                            double difference1 = arr[i].angleB - arr[j].angleB, b = arr[i].angleB / difference1, b1 = arr[j].angleB / difference1;
-                            double difference2 = arr[i].angleC - arr[j].angleC, c = arr[i].angleC / difference2, c1 = arr[j].angleC / difference2;
-                            if ((a - (int)a < Double.Epsilon && a1 - (int)a1 < Double.Epsilon && b - (int)b < Double.Epsilon && b1 - (int)b1 < Double.Epsilon) || (b - (int)b < Double.Epsilon && b1 - (int)b1 < Double.Epsilon && c - (int)c < Double.Epsilon && c1 - (int)c1 < Double.Epsilon) || (a - (int)a < Double.Epsilon && a1 - (int)a1 < Double.Epsilon && c - (int)c < Double.Epsilon && c1 - (int)c1 < Double.Epsilon))
-                            {
-                                Console.Write($"{j + 1};");
-                                count++;
-                                continue;
-                            }
-                        }
-
-                        if ((arr[i].angleA < arr[j].angleA && arr[i].angleB < arr[j].angleB) || (arr[i].angleB < arr[j].angleB && arr[i].angleC < arr[j].angleC) || (arr[i].angleA < arr[j].angleA && arr[i].angleC < arr[j].angleC))
-                        {
-                            double difference = arr[j].angleA - arr[i].angleA, a = arr[j].angleA / difference, a1 = arr[i].angleA / difference;
-                            double difference1 = arr[j].angleB - arr[i].angleB, b = arr[j].angleB / difference1, b1 = arr[i].angleB / difference1;
-                            double difference2 = arr[j].angleC - arr[i].angleC, c = arr[j].angleC / difference2, c1 = arr[i].angleC / difference2;
-                            if ((a - (int)a < Double.Epsilon && a1 - (int)a1 < Double.Epsilon && b - (int)b < Double.Epsilon && b1 - (int)b1 < Double.Epsilon) || (b - (int)b < Double.Epsilon && b1 - (int)b1 < Double.Epsilon && c - (int)c < Double.Epsilon && c1 - (int)c1 < Double.Epsilon) || (a - (int)a < Double.Epsilon && a1 - (int)a1 < Double.Epsilon && c - (int)c < Double.Epsilon && c1 - (int)c1 < Double.Epsilon))
-                            {
-                                Console.Write($"{j + 1};");
-                                count++;
-                                continue;
-                            }
-                        }
-                    }
-
-                    if (count == 0)
-                    {
-                        Console.Write("Нет подобных");
-                    }
-
-                    Console.Write("\n");
-                }
-            }
-
-            else
-            {
-                Console.WriteLine("Так как треугольник всего 1 подобных ему существовать не может");
-            }
-
-        }
-
         //функция поиска равнобедренного треугольника с максимальной площадью;
         public int beIsosceles(int size, Triangle[] arr)
         {
@@ -353,3 +326,4 @@ namespace WindowsFormsApp1
         }
     }
 }
+
