@@ -124,9 +124,8 @@ namespace WindowsFormsApp1
                 {
                     if ((arr[i].sideAB > arr[j].sideAB) && (arr[i].sideBC > arr[j].sideBC) && (arr[i].sideAC > arr[j].sideAC))
                     {
-                        double difference = arr[i].sideAB - arr[j].sideAB, a = arr[i].sideAB / difference, a1 = arr[j].sideAB / difference;
-                        double difference1 = arr[i].sideBC - arr[j].sideBC, b = arr[i].sideBC / difference1, b1 = arr[j].sideBC / difference1;
-                        double difference2 = arr[i].sideAC - arr[j].sideAC, c = arr[i].sideAC / difference2, c1 = arr[j].sideAC / difference2;
+                        double a = arr[i].sideAB / number.differenceA1(arr, i, j), a1 = arr[j].sideAB / number.differenceA1(arr, i, j), b = arr[i].sideBC / number.differenceA2(arr, i, j); 
+                        double b1 = arr[j].sideBC / number.differenceA2(arr, i, j), c = arr[i].sideAC / number.differenceA3(arr, i, j), c1 = arr[j].sideAC / number.differenceA3(arr, i, j);
                         if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
                         {
                             richTextBox3.Text += ($"{j + 1}; ");
@@ -137,9 +136,8 @@ namespace WindowsFormsApp1
 
                     if ((arr[i].sideAB < arr[j].sideAB) && (arr[i].sideBC < arr[j].sideBC) && (arr[i].sideAC < arr[j].sideAC) && i != j)
                     {
-                        double difference = arr[j].sideAB - arr[i].sideAB, a = arr[i].sideAB / difference, a1 = arr[j].sideAB / difference;
-                        double difference1 = arr[j].sideBC - arr[i].sideBC, b = arr[i].sideBC / difference1, b1 = arr[j].sideBC / difference1;
-                        double difference2 = arr[j].sideAC - arr[i].sideAC, c = arr[i].sideAC / difference2, c1 = arr[j].sideAC / difference2;
+                        double a = arr[i].sideAB / number.differenceB1(arr, i, j), a1 = arr[j].sideAB / number.differenceB1(arr, i, j), b = arr[i].sideBC / number.differenceB2(arr, i, j); 
+                        double b1 = arr[j].sideBC / number.differenceB3(arr, i, j), c = arr[i].sideAC / number.differenceB3(arr, i, j), c1 = arr[j].sideAC / number.differenceB3(arr, i, j);
                         if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
                         {
                             richTextBox3.Text += ($"{j + 1}; ");
@@ -208,9 +206,39 @@ namespace WindowsFormsApp1
     class Triangle
     {
         //необходимые данные;
-        public double pointXA, pointYA, pointXB, pointYB, pointXC, pointYC, sideAB, sideBC, sideAC;
-        public double area, perimeter, half_perimeter, angleA, angleB, angleC, A, B, B1, C, A1, C1;
+        public double pointXA, pointYA, pointXB, pointYB, pointXC, pointYC, sideAB, sideBC, sideAC, diffA1, diffA2, diffA3;
+        public double area, perimeter, half_perimeter, angleA, angleB, angleC, A, B, B1, C, A1, C1, diffB1, diffB2, diffB3;
        
+        public double differenceA1(Triangle[] arr, int i, int j)
+        {
+            return diffA1 = arr[i].sideAB - arr[j].sideAB;
+        }
+
+        public double differenceA2(Triangle[] arr, int i, int j)
+        {
+            return diffA2 = arr[i].sideBC - arr[j].sideBC;
+        }
+
+        public double differenceA3(Triangle[] arr, int i, int j)
+        {
+            return diffA3 = arr[i].sideAC - arr[j].sideAC;
+        }
+
+        public double differenceB1(Triangle[] arr, int i, int j)
+        {
+            return diffB1 = arr[j].sideAB - arr[i].sideAB;
+        }
+
+        public double differenceB2(Triangle[] arr, int i, int j)
+        {
+            return diffB2 = arr[j].sideBC - arr[i].sideBC;
+        }
+
+        public double differenceB3(Triangle[] arr, int i, int j)
+        {
+            return diffB3 = arr[j].sideAC - arr[i].sideAC;
+        }
+
         public double VariableA(Triangle[] arr, int i)
         {
             return A = arr[i].pointXB - arr[i].pointXA;
