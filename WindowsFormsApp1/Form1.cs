@@ -18,141 +18,148 @@ namespace WindowsFormsApp1
             int size;
             int count = 0;
 
-            size = Convert.ToInt32(textBox_size.Text);
-
-            Isoc isoc = new Isoc();
-
-            Triangle number = new Triangle();
-
-            Triangle[] arr = new Triangle[size];
-
-            Random random = new Random();
-
-            for (int i = 0; i < arr.Length; i++)
+            try
             {
-                do
+                size = Convert.ToInt32(textBox_size.Text);
+
+                Isoc isoc = new Isoc();
+
+                Triangle number = new Triangle();
+
+                Triangle[] arr = new Triangle[size];
+
+                Random random = new Random();
+
+                for (int i = 0; i < arr.Length; i++)
                 {
-                    arr[i] = new Triangle();
-
-                    arr[i].pointXA = random.Next(-10, 10);
-                    
-                    arr[i].pointYA = random.Next(-10, 10);
-
-                    //циклы для проверки ввода координат - координаты точек не могут совпадать
                     do
                     {
+                        arr[i] = new Triangle();
 
-                        arr[i].pointXB = random.Next(-10, 10);
-                        
-                    } while (arr[i].pointXB == arr[i].pointXA);
+                        arr[i].pointXA = random.Next(-10, 10);
 
-                    do
-                    {
+                        arr[i].pointYA = random.Next(-10, 10);
 
-                        arr[i].pointYB = random.Next(-10, 10);
-
-                    } while (arr[i].pointYB == arr[i].pointYA);
-
-                    do
-                    {
-
-                        arr[i].pointXC = random.Next(-10, 10);
-                      
-                    } while (arr[i].pointXC == arr[i].pointXB || arr[i].pointXC == arr[i].pointXA);
-
-                    do
-                    {
-
-                        arr[i].pointYC = random.Next(-10, 10);
-
-                    } while (arr[i].pointYC == arr[i].pointYB || arr[i].pointYC == arr[i].pointYA);
-
-                    //находим длины сторон по углам;
-                    arr[i].sideAB = Math.Abs(Math.Sqrt((number.VariableA(arr, i) * number.VariableA(arr, i)) + (number.VariableB(arr, i) * number.VariableB(arr, i))));
-                    arr[i].sideBC = Math.Abs(Math.Sqrt((number.VariableB1(arr, i) * number.VariableB1(arr, i)) + (number.VariableC(arr, i) * number.VariableC(arr, i))));
-                    arr[i].sideAC = Math.Abs(Math.Sqrt((number.VariableA1(arr, i) * number.VariableA1(arr, i)) + (number.VariableC1(arr, i) * number.VariableC1(arr, i))));
-
-                } while (!number.isCorrect(arr, i));
-
-            }
-
-            //подсчет и вывод информ. о равнобедренном треугольнике с макс. площадью;
-            number.Calculate(size, arr);
-
-            for(int i = 0; i < arr.Length; i++)
-            {
-                if (number.beIsosceles(size, arr) >= 0 && number.beIsosceles(size, arr) == i)
-                {
-                    richTextBox2.Text += ($"Равнобедренный треугольник под номером {i + 1} имеет найбольшую площадь: {arr[number.beIsosceles(size, arr)].area} см^2" + "\n\n");
-                    count++;
-                    break;
-                }
-            }
-
-            if(count == 0)
-            {
-                richTextBox2.Text += ($"Среди данных треугольников нет равнобедренного для подсчета максимальной площади" + "\n\n");
-            }
-
-            //вывод информации;
-            for(int i = 0; i < arr.Length; i++)
-            {
-                richTextBox1.Text += ($"Треугольник под номером {i + 1}" + "\n");
-                richTextBox1.Text += (($"Сторона АB = {Math.Round(arr[i].sideAB, 3)}, BC = {Math.Round(arr[i].sideBC, 3)}, AC = {Math.Round(arr[i].sideAC, 3)}" + "\n"));
-                richTextBox1.Text += (($"Площадь = {Math.Round(arr[i].area, 3)}, Периметр = {Math.Round(arr[i].perimeter, 3)}") + "\n");
-                richTextBox1.Text += (($"Угол А = {Math.Round(arr[i].angleA, 3)}, B = {Math.Round(arr[i].angleB, 3)}, C = {Math.Round(arr[i].angleC, 3)}") + "\n\n");
-
-                if(isoc.isoc(arr, i))
-                {
-                    richTextBox2.Text += ($"Треугольник под номером {i + 1} равнобедренный" + "\n\n");
-                }
-
-                else
-                {
-                    richTextBox2.Text += ($"Треугольник под номером {i + 1} не является равнобедренным" + "\n\n");
-                }
-            }
-
-            //поиск подобных треугольников;
-            for (int i = 0; i < arr.Length; i++)
-            {
-                richTextBox3.Text += ($"Подобные {i + 1}-му: ");
-
-                count = 0;
-
-                for (int j = i + 1; j < arr.Length; j++)
-                {
-                    if ((arr[i].sideAB > arr[j].sideAB) && (arr[i].sideBC > arr[j].sideBC) && (arr[i].sideAC > arr[j].sideAC))
-                    {
-                        double a = arr[i].sideAB / number.differenceA1(arr, i, j), a1 = arr[j].sideAB / number.differenceA1(arr, i, j), b = arr[i].sideBC / number.differenceA2(arr, i, j); 
-                        double b1 = arr[j].sideBC / number.differenceA2(arr, i, j), c = arr[i].sideAC / number.differenceA3(arr, i, j), c1 = arr[j].sideAC / number.differenceA3(arr, i, j);
-                        if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
+                        //циклы для проверки ввода координат - координаты точек не могут совпадать
+                        do
                         {
-                            richTextBox3.Text += ($"{j + 1}; ");
-                            count++;
-                            continue;
-                        }
-                    }
 
-                    if ((arr[i].sideAB < arr[j].sideAB) && (arr[i].sideBC < arr[j].sideBC) && (arr[i].sideAC < arr[j].sideAC) && i != j)
-                    {
-                        double a = arr[i].sideAB / number.differenceB1(arr, i, j), a1 = arr[j].sideAB / number.differenceB1(arr, i, j), b = arr[i].sideBC / number.differenceB2(arr, i, j); 
-                        double b1 = arr[j].sideBC / number.differenceB3(arr, i, j), c = arr[i].sideAC / number.differenceB3(arr, i, j), c1 = arr[j].sideAC / number.differenceB3(arr, i, j);
-                        if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
+                            arr[i].pointXB = random.Next(-10, 10);
+
+                        } while (arr[i].pointXB == arr[i].pointXA);
+
+                        do
                         {
-                            richTextBox3.Text += ($"{j + 1}; ");
-                            count++;
-                            continue;
-                        }
+
+                            arr[i].pointYB = random.Next(-10, 10);
+
+                        } while (arr[i].pointYB == arr[i].pointYA);
+
+                        do
+                        {
+
+                            arr[i].pointXC = random.Next(-10, 10);
+
+                        } while (arr[i].pointXC == arr[i].pointXB || arr[i].pointXC == arr[i].pointXA);
+
+                        do
+                        {
+
+                            arr[i].pointYC = random.Next(-10, 10);
+
+                        } while (arr[i].pointYC == arr[i].pointYB || arr[i].pointYC == arr[i].pointYA);
+
+                        //находим длины сторон по углам;
+                        arr[i].sideAB = Math.Abs(Math.Sqrt((number.VariableA(arr, i) * number.VariableA(arr, i)) + (number.VariableB(arr, i) * number.VariableB(arr, i))));
+                        arr[i].sideBC = Math.Abs(Math.Sqrt((number.VariableB1(arr, i) * number.VariableB1(arr, i)) + (number.VariableC(arr, i) * number.VariableC(arr, i))));
+                        arr[i].sideAC = Math.Abs(Math.Sqrt((number.VariableA1(arr, i) * number.VariableA1(arr, i)) + (number.VariableC1(arr, i) * number.VariableC1(arr, i))));
+
+                    } while (!number.isCorrect(arr, i));
+
+                }
+
+                //подсчет и вывод информ. о равнобедренном треугольнике с макс. площадью;
+                number.Calculate(size, arr);
+
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    if (number.beIsosceles(size, arr) >= 0 && number.beIsosceles(size, arr) == i)
+                    {
+                        richTextBox2.Text += ($"Равнобедренный треугольник под номером {i + 1} имеет найбольшую площадь: {arr[number.beIsosceles(size, arr)].area} см^2" + "\n\n");
+                        count++;
+                        break;
                     }
                 }
 
                 if (count == 0)
                 {
-                    richTextBox3.Text += ("Нет подобных");
+                    richTextBox2.Text += ($"Среди данных треугольников нет равнобедренного для подсчета максимальной площади" + "\n\n");
                 }
 
-                richTextBox3.Text += ("\n\n");
+                //вывод информации;
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    richTextBox1.Text += ($"Треугольник под номером {i + 1}" + "\n");
+                    richTextBox1.Text += (($"Сторона АB = {Math.Round(arr[i].sideAB, 3)}, BC = {Math.Round(arr[i].sideBC, 3)}, AC = {Math.Round(arr[i].sideAC, 3)}" + "\n"));
+                    richTextBox1.Text += (($"Площадь = {Math.Round(arr[i].area, 3)}, Периметр = {Math.Round(arr[i].perimeter, 3)}") + "\n");
+                    richTextBox1.Text += (($"Угол А = {Math.Round(arr[i].angleA, 3)}, B = {Math.Round(arr[i].angleB, 3)}, C = {Math.Round(arr[i].angleC, 3)}") + "\n\n");
+
+                    if (isoc.isoc(arr, i))
+                    {
+                        richTextBox2.Text += ($"Треугольник под номером {i + 1} равнобедренный" + "\n\n");
+                    }
+
+                    else
+                    {
+                        richTextBox2.Text += ($"Треугольник под номером {i + 1} не является равнобедренным" + "\n\n");
+                    }
+                }
+
+                //поиск подобных треугольников;
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    richTextBox3.Text += ($"Подобные {i + 1}-му: ");
+
+                    count = 0;
+
+                    for (int j = i + 1; j < arr.Length; j++)
+                    {
+                        if ((arr[i].sideAB > arr[j].sideAB) && (arr[i].sideBC > arr[j].sideBC) && (arr[i].sideAC > arr[j].sideAC))
+                        {
+                            double a = arr[i].sideAB / number.differenceA1(arr, i, j), a1 = arr[j].sideAB / number.differenceA1(arr, i, j), b = arr[i].sideBC / number.differenceA2(arr, i, j);
+                            double b1 = arr[j].sideBC / number.differenceA2(arr, i, j), c = arr[i].sideAC / number.differenceA3(arr, i, j), c1 = arr[j].sideAC / number.differenceA3(arr, i, j);
+                            if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
+                            {
+                                richTextBox3.Text += ($"{j + 1}; ");
+                                count++;
+                                continue;
+                            }
+                        }
+
+                        if ((arr[i].sideAB < arr[j].sideAB) && (arr[i].sideBC < arr[j].sideBC) && (arr[i].sideAC < arr[j].sideAC) && i != j)
+                        {
+                            double a = arr[i].sideAB / number.differenceB1(arr, i, j), a1 = arr[j].sideAB / number.differenceB1(arr, i, j), b = arr[i].sideBC / number.differenceB2(arr, i, j);
+                            double b1 = arr[j].sideBC / number.differenceB3(arr, i, j), c = arr[i].sideAC / number.differenceB3(arr, i, j), c1 = arr[j].sideAC / number.differenceB3(arr, i, j);
+                            if ((a - (int)a < Double.Epsilon) && (a1 - (int)a1 < Double.Epsilon) && (b - (int)b < Double.Epsilon) && (b1 - (int)b1 < Double.Epsilon) && (c - (int)c < Double.Epsilon) && (c1 - (int)c1 < Double.Epsilon))
+                            {
+                                richTextBox3.Text += ($"{j + 1}; ");
+                                count++;
+                                continue;
+                            }
+                        }
+                    }
+
+                    if (count == 0)
+                    {
+                        richTextBox3.Text += ("Нет подобных");
+                    }
+
+                    richTextBox3.Text += ("\n\n");
+                }
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show(exc.Message);
             }
 
             Console.ReadLine();
