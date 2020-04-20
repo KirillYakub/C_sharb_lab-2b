@@ -36,36 +36,36 @@ namespace WindowsFormsApp1
                     {
                         arr[i] = new Triangle();
 
-                        arr[i].pointXA = random.Next(-10, 10);
+                        arr[i].pointXA = random.Next(0, 30);
 
-                        arr[i].pointYA = random.Next(-10, 10);
+                        arr[i].pointYA = random.Next(0, 30);
 
                         //циклы для проверки ввода координат - координаты точек не могут совпадать
                         do
                         {
 
-                            arr[i].pointXB = random.Next(-10, 10);
+                            arr[i].pointXB = random.Next(0, 30);
 
                         } while (arr[i].pointXB == arr[i].pointXA);
 
                         do
                         {
 
-                            arr[i].pointYB = random.Next(-10, 10);
+                            arr[i].pointYB = random.Next(0, 30);
 
                         } while (arr[i].pointYB == arr[i].pointYA);
 
                         do
                         {
 
-                            arr[i].pointXC = random.Next(-10, 10);
+                            arr[i].pointXC = random.Next(0, 30);
 
                         } while (arr[i].pointXC == arr[i].pointXB || arr[i].pointXC == arr[i].pointXA);
 
                         do
                         {
 
-                            arr[i].pointYC = random.Next(-10, 10);
+                            arr[i].pointYC = random.Next(0, 30);
 
                         } while (arr[i].pointYC == arr[i].pointYB || arr[i].pointYC == arr[i].pointYA);
 
