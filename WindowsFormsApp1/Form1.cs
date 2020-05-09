@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.IO;
 
 namespace WindowsFormsApp1
 {
@@ -10,14 +11,17 @@ namespace WindowsFormsApp1
         { InitializeComponent(); }
 
         public void Form1_Load(object sender, EventArgs e)
-        { }
+        { 
+            this.CenterToScreen();
+            MessageBox.Show("Если вы раннее сохраняли информацию в файл - можете вывести ее, нажав на кнопку в нижнем правом углу формы");
+        }
 
         //генерирование координат треугольников;
         public void button1_Click(object sender, EventArgs e)
         {
             int size;
             int count = 0;
-
+            
             try
             {
                 size = Convert.ToInt32(textBox_size.Text);
@@ -75,7 +79,6 @@ namespace WindowsFormsApp1
                         arr[i].sideAC = Math.Abs(Math.Sqrt((number.VariableA1(arr, i) * number.VariableA1(arr, i)) + (number.VariableC1(arr, i) * number.VariableC1(arr, i))));
 
                     } while (!number.isCorrect(arr, i));
-
                 }
 
                 //подсчет и вывод информ. о равнобедренном треугольнике с макс. площадью;
@@ -175,7 +178,13 @@ namespace WindowsFormsApp1
         { }
 
         public void button2_Click(object sender, EventArgs e)
-        { this.Close(); }
+        {
+            DialogResult result = MessageBox.Show("Не забудьте сохранить данные в файлы в нижней части формы! Если вы все же решили выйти - нажмите Да, остаться - Нет", " ", MessageBoxButtons.YesNo);
+            if(result == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
 
         public void richTextBox2_TextChanged(object sender, EventArgs e)
         { }
@@ -188,6 +197,142 @@ namespace WindowsFormsApp1
 
         public void label4_Click(object sender, EventArgs e)
         { }
+
+        // Запись в бинарный файл. Проводник будет открыт несколько раз для записи из каждого richtextbox-а в каждый файл;
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            SaveFileDialog save_text = new SaveFileDialog();
+
+            // Если хоть один из боксов пуст - выдаем сообщение о невозможности записи;
+            if (richTextBox1.Text != string.Empty || richTextBox2.Text != string.Empty || richTextBox3.Text != string.Empty)
+            {
+                MessageBox.Show("Проводник будет открыт 3 раза для записи в файлы информации из каждого поля. Для начала выберите файл для записи основной информации о треугольниках");
+
+                // Типы файлов для записи;
+                save_text.Filter = "Bin files(*.bin) | *.bin";
+
+                if (save_text.ShowDialog() == DialogResult.OK)
+                {
+                    // Названием переменной является название выбранного файла;
+                    string file_name = save_text.FileName;
+
+                    FileStream file = new FileStream(file_name, FileMode.OpenOrCreate, FileAccess.Write);
+
+                    // Запись будет происходить в бинарном виде - создаем переменную;
+                    BinaryWriter writer = new BinaryWriter(file);
+
+                    // Считываем в файл;
+                    writer.Write(richTextBox1.Text);
+
+                    MessageBox.Show("Информация о размерностях треугольников сохранена, теперь выберите файл для записи информации о равнобедренных треугольниках");
+
+                    //Закрываем файл;
+                    writer.Close();
+
+                    file.Close();
+                }
+
+                // Аналогично вышесказанному;
+                if (save_text.ShowDialog() == DialogResult.OK)
+                {
+                    string file_name_1 = save_text.FileName;
+
+                    FileStream file_1 = new FileStream(file_name_1, FileMode.OpenOrCreate, FileAccess.Write);
+
+                    BinaryWriter writer_1 = new BinaryWriter(file_1);
+
+                    writer_1.Write(richTextBox2.Text);
+
+                    MessageBox.Show("Информация о равнобедренных треугольниках сохранена, теперь выберите файл для сохранения информации о подобных треугольниках");
+
+                    writer_1.Close();
+
+                    file_1.Close();
+                }
+
+                if (save_text.ShowDialog() == DialogResult.OK)
+                {
+                    string file_name_2 = save_text.FileName;
+
+                    FileStream file_2 = new FileStream(file_name_2, FileMode.OpenOrCreate, FileAccess.Write);
+
+                    BinaryWriter writer_2 = new BinaryWriter(file_2);
+
+                    writer_2.Write(richTextBox3.Text);
+
+                    writer_2.Close();
+
+                    file_2.Close();
+                }
+
+                MessageBox.Show("Вы сохранили все данные что посчитали нужными");
+            }
+            else
+            {
+                MessageBox.Show("Некоторые поля пусты, запись невозможна");
+            }
+        }
+
+        // С считыванием из файлов такая же работа, как и с записью, только записываем мы не из richtextbox-а в файл, а наоборот;
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog open_text = new OpenFileDialog();
+
+            open_text.Filter = "Bin files(*.bin) | *.bin";
+
+            MessageBox.Show("Проводник будет открыт 3 раза для выбора файлов для считывания. Если в полях на данный момент есть значения - они будут стерты после считывания");
+
+            if (open_text.ShowDialog() == DialogResult.OK)
+            {
+                string file_name = open_text.FileName;
+
+                FileStream file = new FileStream(file_name, FileMode.Open, FileAccess.Read);
+
+                BinaryReader reader = new BinaryReader(file);
+
+                richTextBox1.Text = reader.ReadString();
+
+                MessageBox.Show("Выведена информация о треугольниках, теперь выберите файл для считывания информации о равнобедренных треугольниках");
+
+                reader.Close();
+
+                file.Close();
+            }
+
+            if (open_text.ShowDialog() == DialogResult.OK)
+            {
+                string file_name_1 = open_text.FileName;
+
+                FileStream file_1 = new FileStream(file_name_1, FileMode.Open, FileAccess.Read);
+
+                BinaryReader reader_1 = new BinaryReader(file_1);
+
+                richTextBox2.Text = reader_1.ReadString();
+
+                MessageBox.Show("Выведена информация о равнобедренных треугольниках, теперь выберите файл для считывания информации о подобных треугольниках");
+
+                reader_1.Close();
+
+                file_1.Close();
+            }
+
+            if (open_text.ShowDialog() == DialogResult.OK)
+            {
+                string file_name_2 = open_text.FileName;
+
+                FileStream file_2 = new FileStream(file_name_2, FileMode.Open, FileAccess.Read);
+
+                BinaryReader reader_2 = new BinaryReader(file_2);
+
+                richTextBox3.Text = reader_2.ReadString();
+
+                reader_2.Close();
+
+                file_2.Close();
+            }
+
+            MessageBox.Show("Все данные которые вы посчитали необходимыми выведены");
+        }
     }
 
     class Isoc : Triangle
@@ -311,7 +456,6 @@ namespace WindowsFormsApp1
         //функция подсчета площади, периметра и углов;
         public void Calculate(int size, Triangle[] arr)
         {
-           
             for (int i = 0; i < arr.Length; i++)
             {
                 arr[i].perimeter = arr[i].sideAB + arr[i].sideBC + arr[i].sideAC;
@@ -361,4 +505,3 @@ namespace WindowsFormsApp1
         }
     }
 }
-

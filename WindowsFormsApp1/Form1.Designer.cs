@@ -38,6 +38,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Start
@@ -70,9 +72,9 @@
             // 
             // richTextBox1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(54, 192);
+            this.richTextBox1.Location = new System.Drawing.Point(59, 192);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(323, 453);
+            this.richTextBox1.Size = new System.Drawing.Size(323, 408);
             this.richTextBox1.TabIndex = 3;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -91,7 +93,7 @@
             // 
             this.richTextBox2.Location = new System.Drawing.Point(410, 192);
             this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(324, 453);
+            this.richTextBox2.Size = new System.Drawing.Size(324, 408);
             this.richTextBox2.TabIndex = 6;
             this.richTextBox2.Text = "";
             this.richTextBox2.TextChanged += new System.EventHandler(this.richTextBox2_TextChanged);
@@ -100,7 +102,7 @@
             // 
             this.richTextBox3.Location = new System.Drawing.Point(767, 192);
             this.richTextBox3.Name = "richTextBox3";
-            this.richTextBox3.Size = new System.Drawing.Size(324, 453);
+            this.richTextBox3.Size = new System.Drawing.Size(324, 408);
             this.richTextBox3.TabIndex = 7;
             this.richTextBox3.Text = "";
             this.richTextBox3.TextChanged += new System.EventHandler(this.richTextBox3_TextChanged);
@@ -134,11 +136,33 @@
             this.label4.Text = "Данные о наличии подобных треугольников";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(947, 606);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(144, 82);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "Сохранить данные в файл";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(767, 606);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(144, 82);
+            this.button2.TabIndex = 12;
+            this.button2.Text = "Извлечь данные из файла\r\n";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1160, 711);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -169,6 +193,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }
 
